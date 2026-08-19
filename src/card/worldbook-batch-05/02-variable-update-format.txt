@@ -1,0 +1,17 @@
+<变量更新格式>
+本条只供额外变量模型使用，主剧情模型只写正文，不输出变量块。
+
+唯一格式:
+  <UpdateVariable><JSONPatch>[{"op":"replace","path":"/系统/当前时间","value":"08:01"}]</JSONPatch></UpdateVariable>
+
+规则:
+- 只输出一个严格JSON数组。
+- 只使用add、replace、remove。
+- add或replace必须包含op、path、value。
+- remove只包含op、path。
+- 父对象不存在时不猜测补建。
+- 已有数值先计算增量，再把最终值写入value。
+- 同一对象内键名不得重复。
+- 根路径只能是/系统、/规则、/角色。
+- 除强制时间、当前地点、当前事件、当前出场角色外，只更新本轮实际变化。
+</变量更新格式>

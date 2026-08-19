@@ -1,0 +1,18 @@
+<%_ {
+var sys = getvar('stat_data.系统', { defaults: 0 }) || {};
+var items = sys['持有物品'] || {};
+var hasItems = items && typeof items === 'object' && !Array.isArray(items) && Object.keys(items).length > 0;
+if (!hasItems) return;
+print('持有物品:\n');
+for (var name in items) {
+  if (!Object.prototype.hasOwnProperty.call(items, name)) continue;
+  var raw = items[name];
+  var item = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+  var quantity = item['数量'] !== undefined ? item['数量'] : raw;
+  var desc = item['描述'] !== undefined ? item['描述'] : '';
+  print('  ' + name + ': 数量=' + String(quantity));
+  if (desc) print('，描述=' + String(desc));
+  print('\n');
+}
+}
+_%>

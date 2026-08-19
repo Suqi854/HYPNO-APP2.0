@@ -1,0 +1,56 @@
+<%_ {
+var roles = getvar('stat_data.角色', { defaults: 0 }) || {};
+var pages = ['衣着', '信息', '状态', '事件', '敏感', '效果', '劣迹', '改造', '物品'];
+var pageKeys = {
+  '衣着': ['头发', '面部', '上衣', '下衣'],
+  '信息': ['姓名', '性别', '_年龄', '社团或职业', '身高', '体重', '三围', '阴茎长度', '绰号', '绰号已认可'],
+  '状态': ['好感度', '警戒度', '服从度', '性欲', '快感值', '是否派遣中'],
+  '事件': ['_事件记录', '至关重要记忆'],
+  '敏感': ['阴蒂敏感度', '小穴敏感度', '菊穴敏感度', '尿道敏感度', '乳头敏感度', '阴蒂高潮次数', '小穴高潮次数', '菊穴高潮次数', '尿道高潮次数', '乳头高潮次数', '阴茎敏感度', '龟头敏感度', '前列腺敏感度', '阴茎高潮次数', '龟头高潮次数', '前列腺高潮次数'],
+  '效果': ['心理', '临时催眠效果', '永久催眠效果']
+};
+function hasValue(value) {
+  return value !== undefined && value !== null && value !== '';
+}
+function asText(value) {
+  if (value && typeof value === 'object') {
+    try { return JSON.stringify(value); } catch (error) {}
+  }
+  return String(value);
+}
+print('角色变量:\n');
+for (var roleName in roles) {
+  if (!Object.prototype.hasOwnProperty.call(roles, roleName)) continue;
+  var role = roles[roleName] || {};
+  print('  ' + roleName + ':\n');
+  for (var pageIndex = 0; pageIndex < pages.length; pageIndex += 1) {
+    var page = pages[pageIndex];
+    var source = role[page] || {};
+    var keys = pageKeys[page] || [];
+    var hasPage = false;
+    for (var keyIndex = 0; keyIndex < keys.length; keyIndex += 1) {
+      if (hasValue(source[keys[keyIndex]])) {
+        hasPage = true;
+        break;
+      }
+    }
+    if (!hasPage && page !== '劣迹' && page !== '改造' && page !== '物品') continue;
+    print('    ' + page + ':\n');
+    for (var valueIndex = 0; valueIndex < keys.length; valueIndex += 1) {
+      var key = keys[valueIndex];
+      if (page === '效果' && (key === '临时催眠效果' || key === '永久催眠效果')) {
+        var effectRoot = source[key] || {};
+        for (var effectName in effectRoot) {
+          if (!Object.prototype.hasOwnProperty.call(effectRoot, effectName)) continue;
+          print('      ' + key + '/' + effectName + ': ' + asText(effectRoot[effectName]) + '\n');
+        }
+        continue;
+      }
+      if (hasValue(source[key])) {
+        print('      ' + key + ': ' + asText(source[key]) + '\n');
+      }
+    }
+  }
+}
+}
+_%>

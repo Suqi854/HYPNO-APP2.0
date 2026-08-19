@@ -1,0 +1,22 @@
+<%_ {
+var rules = getvar('stat_data.规则', { defaults: 0 }) || {};
+var hasRules = rules && typeof rules === 'object' && !Array.isArray(rules) && Object.keys(rules).length > 0;
+if (!hasRules) return;
+print('规则变量:\n');
+for (var ruleId in rules) {
+  if (!Object.prototype.hasOwnProperty.call(rules, ruleId)) continue;
+  var rule = rules[ruleId] || {};
+  var fields = ['名称', '内容', '目标范围', '生效范围', '来源', '地点ID', '地点名', '地图层级', '地点路径', '持续类型'];
+  print('  ' + ruleId + ':\n');
+  for (var fieldIndex = 0; fieldIndex < fields.length; fieldIndex += 1) {
+    var field = fields[fieldIndex];
+    var value = rule[field];
+    if (value === undefined || value === null || value === '') continue;
+    if (value && typeof value === 'object') {
+      try { value = JSON.stringify(value); } catch (error) { value = String(value); }
+    }
+    print('    ' + field + ': ' + String(value) + '\n');
+  }
+}
+}
+_%>

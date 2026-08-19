@@ -1,0 +1,16 @@
+<%_ {
+var rules = getvar('stat_data.校规', { defaults: 0 }) || {};
+var hasRules = rules && typeof rules === 'object' && !Array.isArray(rules) && Object.keys(rules).length > 0;
+if (!hasRules) return;
+print('校规:\n');
+try {
+  if (typeof YAML !== 'undefined' && YAML.stringify) {
+    print(YAML.stringify(rules).trim() + '\n');
+  } else {
+    print(JSON.stringify(rules) + '\n');
+  }
+} catch (error) {
+  print(JSON.stringify(rules) + '\n');
+}
+}
+_%>

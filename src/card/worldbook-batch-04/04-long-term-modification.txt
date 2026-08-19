@@ -1,0 +1,14 @@
+<%_ {
+var roles = getvar('stat_data.角色', { defaults: 0 }) || {};
+var lines = [];
+for (var name in roles) {
+  if (!Object.prototype.hasOwnProperty.call(roles, name)) continue;
+  var role = roles[name] || {};
+  var remodel = role['改造'];
+  if (!remodel || typeof remodel !== 'object' || Array.isArray(remodel) || Object.keys(remodel).length === 0) continue;
+  lines.push('  - ' + name + '：' + JSON.stringify(remodel));
+}
+if (lines.length) {
+  print('<长期改造生效>\n' + lines.join('\n') + '\n- 以上是持续存在的身体改造事实，除非变量中被明确撤销或再次改变。\n</长期改造生效>');
+}
+} _%>

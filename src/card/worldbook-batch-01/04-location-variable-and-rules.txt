@@ -1,0 +1,40 @@
+<%_ {
+var sys = getvar('stat_data.系统', { defaults: 0 }) || {};
+var rules = getvar('stat_data.规则', { defaults: 0 }) || {};
+var currentLocation = String(sys['当前地点'] || '未记录');
+function hasValue(value) {
+  return value !== undefined && value !== null && value !== '';
+}
+function asText(value) {
+  if (value && typeof value === 'object') {
+    try { return JSON.stringify(value); } catch (error) {}
+  }
+  return String(value);
+}
+print('地点变量摘要:\n');
+print('  当前地点: ' + currentLocation + '\n');
+print('  当前事件: ' + asText(sys['当前事件'] || '未记录') + '\n');
+print('  当前日程: ' + asText(sys['_当前日程'] || '未记录') + '\n');
+print('  当前特殊日期: ' + asText(sys['_当前特殊日期'] || '未记录') + '\n');
+
+var matched = {};
+for (var ruleId in rules) {
+  if (!Object.prototype.hasOwnProperty.call(rules, ruleId)) continue;
+  var rule = rules[ruleId] || {};
+  var scope = String(rule['生效范围'] || rule['地点名'] || '');
+  if (!scope) continue;
+  var current = String(currentLocation).toLowerCase();
+  var normalizedScope = String(scope).toLowerCase();
+  if (current.indexOf(normalizedScope) >= 0 || normalizedScope.indexOf(current) >= 0) {
+    matched[ruleId] = rule;
+  }
+}
+if (Object.keys(matched).length) {
+  print('当前适用地点规则:\n');
+  for (var matchedId in matched) {
+    if (!Object.prototype.hasOwnProperty.call(matched, matchedId)) continue;
+    print('  - ' + matchedId + ': ' + asText(matched[matchedId]) + '\n');
+  }
+}
+}
+_%>

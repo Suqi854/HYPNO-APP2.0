@@ -1,0 +1,38 @@
+<%_ {
+var roles = getvar('stat_data.角色', { defaults: 0 }) || {};
+var sceneNames = getvar('stat_data.系统.当前出场角色', { defaults: 0 }) || [];
+if (!Array.isArray(sceneNames)) sceneNames = [];
+function objectValue(value) { return value && typeof value === 'object' && !Array.isArray(value); }
+function hasEffects(value) {
+  if (!objectValue(value)) return false;
+  return Object.keys(value).some(function(key) {
+    var item = value[key];
+    return item !== undefined && item !== null && item !== '' && !(objectValue(item) && Object.keys(item).length === 0);
+  });
+}
+function asText(value) {
+  try {
+    if (typeof YAML !== 'undefined' && YAML.stringify) return YAML.stringify(value).trim();
+  } catch (error) {}
+  return JSON.stringify(value);
+}
+var rows = [];
+for (var name in roles) {
+  if (!Object.prototype.hasOwnProperty.call(roles, name)) continue;
+  var role = objectValue(roles[name]) ? roles[name] : {};
+  var effects = objectValue(role['效果']) ? role['效果'] : {};
+  var temporary = objectValue(effects['临时催眠效果']) ? effects['临时催眠效果'] : {};
+  var permanent = objectValue(effects['永久催眠效果']) ? effects['永久催眠效果'] : {};
+  if (!hasEffects(temporary) && !hasEffects(permanent)) continue;
+  if (sceneNames.indexOf(name) < 0 && String(typeof lastUserMessage !== 'undefined' ? lastUserMessage : '').indexOf(name) < 0) continue;
+  rows.push({ name: name, temporary: temporary, permanent: permanent });
+}
+if (!rows.length) return;
+print('<当前有效催眠效果角色>\n');
+for (var index = 0; index < rows.length; index += 1) {
+  print('- ' + rows[index].name + '\n');
+  if (hasEffects(rows[index].temporary)) print('  临时催眠效果: ' + asText(rows[index].temporary).split('\n').join('\n    ') + '\n');
+  if (hasEffects(rows[index].permanent)) print('  永久催眠效果: ' + asText(rows[index].permanent).split('\n').join('\n    ') + '\n');
+}
+print('</当前有效催眠效果角色>');
+} _%>

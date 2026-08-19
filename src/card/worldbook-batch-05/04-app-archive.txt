@@ -1,0 +1,20 @@
+<%_ {
+var roles = getvar('stat_data.角色', { defaults: 0 }) || {};
+var names = Object.keys(roles).filter(function(name) {
+  return Object.prototype.hasOwnProperty.call(roles, name);
+});
+print('APP档案:\n');
+if (!names.length) {
+  print('- 暂无角色\n');
+} else {
+  for (var index = 0; index < names.length; index += 1) {
+    var name = names[index];
+    var role = roles[name] || {};
+    var info = role['信息'] || {};
+    var gender = info['性别'] || '未知';
+    var age = info['_年龄'] !== undefined ? info['_年龄'] : '未知';
+    var identity = info['社团或职业'] || info['身份'] || '未知';
+    print('- ' + name + '，性别=' + gender + '，年龄=' + age + '，身份=' + identity + '\n');
+  }
+}
+} _%>

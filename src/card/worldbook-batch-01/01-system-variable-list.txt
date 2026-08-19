@@ -1,0 +1,43 @@
+<%_ {
+var sys = getvar('stat_data.系统', { defaults: 0 }) || {};
+function hasValue(value) {
+  return value !== undefined && value !== null && value !== '';
+}
+function asText(value) {
+  if (value && typeof value === 'object') {
+    try {
+      if (typeof YAML !== 'undefined' && YAML.stringify) {
+        return YAML.stringify(value).trim();
+      }
+    } catch (error) {}
+    return JSON.stringify(value);
+  }
+  return String(value);
+}
+var keys = [
+  '当前年份',
+  '当前日期',
+  '当前时间',
+  '当前地点',
+  '当前事件',
+  '当前出场角色',
+  'MC能量',
+  'MC能量上限',
+  '持有零花钱',
+  '星光点',
+  '催眠APP订阅等级',
+  '主角可疑度',
+  '_当前周几',
+  '_当前日程',
+  '_当前特殊日期',
+  '_user身份'
+];
+print('系统变量:\n');
+for (var index = 0; index < keys.length; index += 1) {
+  var key = keys[index];
+  var value = sys[key];
+  if (!hasValue(value)) continue;
+  print('  ' + key + ': ' + asText(value) + '\n');
+}
+}
+_%>

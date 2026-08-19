@@ -1,0 +1,14 @@
+{
+  "scriptName": "[隐藏]地图更新标签",
+  "findRegex": "/<地图更新>[\\s\\S]*?<\\/地图更新>/g",
+  "replaceString": "",
+  "placement": [1, 2],
+  "markdownOnly": true,
+  "promptOnly": false,
+  "runOnEdit": true,
+  "disabled": false,
+  "substituteRegex": 0,
+  "minDepth": null,
+  "maxDepth": 4,
+  "trimStrings": []
+}

@@ -1,0 +1,14 @@
+{
+  "scriptName": "通用人物演出解封装",
+  "findRegex": "/<人物演出总块>([\\s\\S]*?)<\\/人物演出总块>/g",
+  "replaceString": "$1",
+  "placement": [2],
+  "markdownOnly": true,
+  "promptOnly": false,
+  "runOnEdit": true,
+  "disabled": true,
+  "substituteRegex": 0,
+  "minDepth": null,
+  "maxDepth": 4,
+  "trimStrings": []
+}

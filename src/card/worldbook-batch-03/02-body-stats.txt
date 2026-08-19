@@ -1,0 +1,20 @@
+<%_ {
+var roles = getvar('stat_data.角色', { defaults: 0 }) || {};
+var lines = [];
+function hasValue(value) { return value !== undefined && value !== null && value !== ''; }
+for (var name in roles) {
+  if (!Object.prototype.hasOwnProperty.call(roles, name)) continue;
+  var role = roles[name] || {};
+  var info = role['信息'] || {};
+  var sensitivity = role['敏感'] || {};
+  var body = [];
+  if (hasValue(info['身高'])) body.push('身高=' + info['身高']);
+  if (hasValue(info['体重'])) body.push('体重=' + info['体重']);
+  if (hasValue(info['三围'])) body.push('三围=' + info['三围']);
+  if (hasValue(info['阴茎长度'])) body.push('阴茎长度=' + info['阴茎长度']);
+  if (Object.keys(sensitivity).length) body.push('敏感度=' + JSON.stringify(sensitivity));
+  if (body.length) lines.push('  - ' + name + '：' + body.join('，'));
+}
+if (lines.length) print('身体状态:\n' + lines.join('\n') + '\n');
+}
+_%>

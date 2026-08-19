@@ -1,0 +1,14 @@
+{
+  "scriptName": "提示词清理历史本轮操作",
+  "findRegex": "/<历史本轮操作>[\\s\\S]*?<\\/历史本轮操作>/g",
+  "replaceString": "",
+  "placement": [1],
+  "markdownOnly": false,
+  "promptOnly": true,
+  "runOnEdit": true,
+  "disabled": true,
+  "substituteRegex": 0,
+  "minDepth": null,
+  "maxDepth": 4,
+  "trimStrings": []
+}

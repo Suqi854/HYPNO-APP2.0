@@ -1,0 +1,11 @@
+<%_ {
+var names = getvar('stat_data.系统.当前出场角色', { defaults: 0 }) || [];
+if (!Array.isArray(names)) names = [];
+print('<当前出场角色变量范围>\n');
+print('上轮收束名单: ' + (names.length ? names.join('、') : '空') + '\n');
+print('- 每轮变量更新必须且只能有一次replace /系统/当前出场角色。\n');
+print('- 名单只包含本轮正文结束时仍在当前场景且实际可互动的角色，去重且不包含user。\n');
+print('- 回忆、通讯、背景说明、仅计划但尚未到场者不得写入。\n');
+print('- 角色离场时从新数组删除；同场但无实际变化的角色仍保留。\n');
+print('</当前出场角色变量范围>');
+} _%>

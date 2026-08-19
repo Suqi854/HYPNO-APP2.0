@@ -1,0 +1,14 @@
+{
+  "scriptName": "通用人物演出框",
+  "findRegex": "/<人物演出>([\\s\\S]*?)<\\/人物演出>/g",
+  "replaceString": "<div class=\"hypno-character-performance\">$1</div>",
+  "placement": [2],
+  "markdownOnly": true,
+  "promptOnly": false,
+  "runOnEdit": true,
+  "disabled": true,
+  "substituteRegex": 0,
+  "minDepth": null,
+  "maxDepth": 4,
+  "trimStrings": []
+}

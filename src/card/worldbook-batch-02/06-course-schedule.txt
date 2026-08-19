@@ -1,0 +1,30 @@
+<%_ {
+var sys = getvar('stat_data.系统', { defaults: 0 }) || {};
+var rows = Array.isArray(sys['_课程表']) ? sys['_课程表'] : [];
+print('课程表只读摘要:\n');
+var summaryKeys = ['当前年份', '当前日期', '当前时间', '_当前周几', '_当前日程', '_当前特殊日期'];
+for (var keyIndex = 0; keyIndex < summaryKeys.length; keyIndex += 1) {
+  var key = summaryKeys[keyIndex];
+  var value = sys[key];
+  if (value !== undefined && value !== null && value !== '') print('  ' + key + ': ' + String(value) + '\n');
+}
+if (!rows.length) return;
+print('  _课程表:\n');
+for (var index = 0; index < rows.length; index += 1) {
+  var row = rows[index];
+  if (!row || typeof row !== 'object') continue;
+  var period = row['课节'] !== undefined ? row['课节'] : String(index + 1);
+  var subject = row['科目'] !== undefined ? row['科目'] : '未记录';
+  var desc = row['原课程描述'] !== undefined ? row['原课程描述'] : '';
+  var modded = Boolean(row['是否魔改']);
+  print('    - ' + String(period) + ': 原=' + String(subject));
+  if (modded) {
+    print('，魔改=' + String(row['魔改课程'] || subject));
+    if (row['魔改课程描述']) print('，描述=' + String(row['魔改课程描述']));
+  } else if (desc) {
+    print('，描述=' + String(desc));
+  }
+  print('\n');
+}
+}
+_%>

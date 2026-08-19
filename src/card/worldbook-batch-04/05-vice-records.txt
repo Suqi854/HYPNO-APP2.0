@@ -1,0 +1,28 @@
+<%_ {
+var roles = getvar('stat_data.角色', { defaults: 0 }) || {};
+var traits = ['愤怒', '色欲', '暴食', '傲慢', '嫉妒', '怠惰', '贪婪', '忧郁', '虚伪'];
+var crimes = ['盗窃', '露出', '私闯', '伤害', '淫乱', '强奸'];
+var lines = [];
+for (var name in roles) {
+  if (!Object.prototype.hasOwnProperty.call(roles, name)) continue;
+  var role = roles[name] || {};
+  var bad = role['劣迹'] || {};
+  var personality = bad['性格'] || {};
+  var record = bad['罪行'] || {};
+  var traitLines = [];
+  for (var traitIndex = 0; traitIndex < traits.length; traitIndex += 1) {
+    var trait = traits[traitIndex];
+    if (!Object.prototype.hasOwnProperty.call(personality, trait)) continue;
+    var value = personality[trait];
+    traitLines.push(trait + '=' + (value && typeof value === 'object' ? (value['状态'] || '无') : String(value || '无')));
+  }
+  var crimeParts = [];
+  for (var crimeIndex = 0; crimeIndex < crimes.length; crimeIndex += 1) {
+    var crime = crimes[crimeIndex];
+    var count = Math.max(0, Math.floor(Number(record[crime]) || 0));
+    if (count > 0) crimeParts.push(crime + count + '次');
+  }
+  if (traitLines.length || crimeParts.length) lines.push('  - ' + name + '：' + (traitLines.length ? '性格[' + traitLines.join('、') + ']' : '') + (crimeParts.length ? ' 罪行[' + crimeParts.join('、') + ']' : ''));
+}
+if (lines.length) print('<劣迹记录（前端只读）>\n' + lines.join('\n') + '\n</劣迹记录>');
+} _%>
