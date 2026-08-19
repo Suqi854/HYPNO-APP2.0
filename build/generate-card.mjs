@@ -13,8 +13,12 @@ const cardDist = path.join(distRoot, "card");
 
 const remoteUrl =
   process.env.HYPNO_APP_REMOTE_URL ||
-  "https://cdn.jsdelivr.net/gh/Suqi854/HYPNO-APP2.0@main/dist/webview/st-load-inline.html";
+  "https://cdn.jsdelivr.net/gh/Suqi854/HYPNO-APP2.0@59bbe4d/dist/webview/st-load-inline.html";
 const cardName = "催眠APP（改）";
+
+function remoteCommitFromUrl(value) {
+  return value.match(/@([^/]+)/)?.[1] || "main";
+}
 
 function readText(relative) {
   return fs.readFileSync(path.join(srcRoot, relative), "utf8");
@@ -124,7 +128,7 @@ function createCard() {
           remoteFrontendUrl: remoteUrl,
           assetBase: "",
           remoteAssetBase: "",
-          remoteCommit: "main",
+          remoteCommit: remoteCommitFromUrl(remoteUrl),
           frontendLoader: "iframe-remote-regex",
           version: "0.1.0",
           modules: [
@@ -224,7 +228,7 @@ const manifest = {
   cardName,
   version: "0.1.0",
   remoteUrl,
-  remoteCommit: "main",
+  remoteCommit: remoteCommitFromUrl(remoteUrl),
   builtAt: new Date().toISOString(),
   artifacts: {
     json: path.relative(root, jsonTarget).replaceAll("\\", "/"),
