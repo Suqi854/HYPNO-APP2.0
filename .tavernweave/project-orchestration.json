@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "authoritySchema": "tavernweave/project-orchestration/v1",
+  "projectId": "hypno-app-gai",
+  "title": "催眠APP（改）",
+  "profile": "blueprint-set",
+  "state": "implementation-candidate",
+  "authorityFile": "总设计案.md",
+  "nextFile": "NEXT.md",
+  "blueprintPolicy": {
+    "masterFile": "蓝图集/BLUEPRINT_INDEX.md",
+    "maxDepth": 2,
+    "maxChildren": 5,
+    "runtimePersistentBlueprintBudget": 0,
+    "blueprints": [
+      {
+        "id": "BP-ROOT",
+        "path": "蓝图集/BLUEPRINT_INDEX.md",
+        "parentId": null,
+        "depth": 1,
+        "status": "active"
+      }
+    ]
+  },
+  "runtimeRefinementPolicy": {
+    "trigger": "observed-problem-or-failed-exit-condition",
+    "maxDepth": 1,
+    "maxOpenBranches": 1,
+    "persistent": false,
+    "mayExpandProductScope": false,
+    "mustReturnToParent": true
+  },
+  "runtimeRefinements": [],
+  "discussionDirections": [],
+  "frontendDecision": {
+    "recommended": "hybrid",
+    "fit": "conditional",
+    "reason": "SillyTavern rolecard with remote HypnoOS frontend and a worldbook/MVU generation bridge",
+    "fallback": "text-first",
+    "reopenWhen": "real SillyTavern iframe, MVU, remote loader and mobile viewport evidence become available",
+    "driverOverride": false,
+    "prototypeGateRequired": true,
+    "realHostGateRequired": true
+  },
+  "acceptance": {
+    "automated": "passed",
+    "staticPreview": "not-run",
+    "realHost": "pending",
+    "driver": {
+      "status": "pending",
+      "source": "driver"
+    }
+  }
+}

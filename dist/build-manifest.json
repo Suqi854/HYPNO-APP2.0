@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "cardName": "催眠APP（改）",
+  "version": "0.1.0",
+  "remoteUrl": "https://cdn.jsdelivr.net/gh/Suqi854/HYPNO-APP2.0@main/dist/webview/st-load-inline.html",
+  "remoteCommit": "main",
+  "builtAt": "2026-08-19T07:25:54.668Z",
+  "artifacts": {
+    "json": "dist/card/催眠APP（改）.json",
+    "png": "dist/card/催眠APP（改）.png",
+    "webview": "dist/webview/st-load-inline.html"
+  },
+  "checks": {
+    "worldbookEntries": 4,
+    "bridgeScripts": 1,
+    "regexScripts": 1,
+    "apiKeyFieldReferenced": true
+  }
+}

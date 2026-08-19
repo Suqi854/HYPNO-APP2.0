@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>催眠APP（改）</title>
+    <style>
+      :root {
+  color-scheme: dark;
+  --bg: #111827;
+  --panel: rgba(17, 24, 39, 0.92);
+  --panel-2: #1f2937;
+  --line: rgba(148, 163, 184, 0.28);
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #22d3ee;
+  --accent-2: #f59e0b;
+  --danger: #ef4444;
+  --success: #10b981;
+  --radius: 8px;
+  font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.app-shell {
+  width: min(100%, 520px);
+  min-height: 100vh;
+  margin: 0 auto;
+  background:
+    linear-gradient(180deg, rgba(34, 211, 238, 0.08), transparent 34%),
+    var(--bg);
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-bottom: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.app-header {
+  min-height: 56px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.app-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.status-pill {
+  min-width: 76px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.14);
+  color: var(--accent);
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.content {
+  min-height: 0;
+  overflow: auto;
+  padding: 14px;
+}
+
+.section {
+  display: grid;
+  gap: 12px;
+}
+
+.panel {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+}
+
+.panel h2 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.field label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #0f172a;
+  color: var(--text);
+  outline: none;
+}
+
+.textarea {
+  min-height: 108px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: rgba(34, 211, 238, 0.8);
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.button {
+  min-height: 36px;
+  padding: 8px 12px;
+  background: rgba(34, 211, 238, 0.18);
+  color: #cffafe;
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  font-weight: 600;
+}
+
+.button:hover {
+  background: rgba(34, 211, 238, 0.28);
+}
+
+.button.secondary {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.button.danger {
+  background: rgba(239, 68, 68, 0.14);
+  color: #fecaca;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.button.ghost {
+  min-height: 30px;
+  padding: 5px 8px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+}
+
+.list-item {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #0f172a;
+}
+
+.list-title {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.list-meta {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.14);
+  color: #fde68a;
+  font-size: 11px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  transform: translateX(-50%);
+  max-width: min(90%, 440px);
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  background: #111827;
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.36);
+  color: var(--text);
+  z-index: 20;
+}
+
+.bottom-nav {
+  display: flex;
+  min-height: 58px;
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+  overflow-x: auto;
+}
+
+.nav-button {
+  flex: 0 0 auto;
+  min-width: 52px;
+  padding: 8px 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.nav-button.active {
+  color: var(--accent);
+  background: rgba(34, 211, 238, 0.1);
+}
+
+.preview-json {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #cbd5e1;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.calendar-cell {
+  min-height: 42px;
+  padding: 5px 3px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #0f172a;
+  font-size: 12px;
+  text-align: center;
+}
+
+.calendar-cell.holiday {
+  color: var(--danger);
+}
+
+.calendar-cell.term {
+  color: var(--accent);
+}
+
+.swatch {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #0f172a;
+  overflow: hidden;
+}
+
+.swatch.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.18);
+}
+
+@media (max-width: 520px) {
+  .app-shell {
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <main id="app" class="app-shell" aria-live="polite"></main>
+    <script>
+      (() => {
+  "use strict";
+
+  const NAMESPACE = "hypno-app-revised";
+  const isEmbedded = window.parent !== window;
+  const today = new Date();
+  let state = {
+    roles: [],
+    locations: [],
+    rules: [],
+    plot: "",
+    icon: "pulse",
+    crack: { mc: false, money: false, vip: false },
+    api: {
+      mode: "custom",
+      endpoint: "",
+      apiKey: "",
+      model: "",
+      maxTokens: 1024,
+      temperature: 0.7,
+      preset: ""
+    },
+    draftRole: null,
+    loading: false
+  };
+
+  const icons = {
+    pulse: "P",
+    ring: "O",
+    diamond: "D",
+    eye: "E",
+    custom: "C"
+  };
+
+  const tabs = [
+    ["home", "首页"],
+    ["roles", "角色"],
+    ["locations", "地点"],
+    ["rules", "规则"],
+    ["plot", "剧情"],
+    ["api", "API"],
+    ["icon", "图标"],
+    ["crack", "破解"],
+    ["calendar", "日历"]
+  ];
+
+  const holidays = {
+    "1-1": "元旦",
+    "2-14": "情人节",
+    "3-8": "妇女节",
+    "4-1": "愚人节",
+    "5-1": "劳动节",
+    "6-1": "儿童节",
+    "10-1": "国庆节",
+    "12-25": "圣诞节"
+  };
+
+  const solarTerms = {
+    1: ["小寒", "大寒"],
+    2: ["立春", "雨水"],
+    3: ["惊蛰", "春分"],
+    4: ["清明", "谷雨"],
+    5: ["立夏", "小满"],
+    6: ["芒种", "夏至"],
+    7: ["小暑", "大暑"],
+    8: ["立秋", "处暑"],
+    9: ["白露", "秋分"],
+    10: ["寒露", "霜降"],
+    11: ["立冬", "小雪"],
+    12: ["大雪", "冬至"]
+  };
+
+  let activeTab = "home";
+  let customIconData = "";
+
+  const root = document.getElementById("app");
+
+  function esc(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function toast(message) {
+    const node = document.createElement("div");
+    node.className = "toast";
+    node.textContent = message;
+    document.body.appendChild(node);
+    setTimeout(() => node.remove(), 2400);
+  }
+
+  function request(action, payload = {}) {
+    if (!isEmbedded) return mockRequest(action, payload);
+    return new Promise((resolve, reject) => {
+      const id = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const timer = setTimeout(() => {
+        window.removeEventListener("message", onMessage);
+        reject(new Error("APP 桥接超时"));
+      }, 15000);
+      const onMessage = (event) => {
+        if (event.source !== window.parent) return;
+        const data = event.data;
+        if (!data || data.namespace !== NAMESPACE || data.id !== id) return;
+        clearTimeout(timer);
+        window.removeEventListener("message", onMessage);
+        if (data.ok) resolve(data.result);
+        else reject(new Error(data.error || "APP 操作失败"));
+      };
+      window.addEventListener("message", onMessage);
+      window.parent.postMessage({ namespace: NAMESPACE, type: "request", id, action, payload }, "*");
+    });
+  }
+
+  function mockRequest(action, payload) {
+    const storage = readPreviewStorage();
+    if (action === "state:get") return Promise.resolve(storage.state);
+    if (action === "api:get") return Promise.resolve(storage.api);
+    if (action === "api:set") {
+      storage.api = payload;
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.api);
+    }
+    if (action === "api:models") {
+      return Promise.resolve(["gpt-4o-mini", "deepseek-chat", "glm-4-plus"]);
+    }
+    if (action === "role:generate") {
+      const text = String(payload.text || "");
+      const draft = text.includes("陈珊珊")
+        ? {
+            persona: {
+              姓名: "陈珊珊",
+              别名: ["珊珊"],
+              性别: "女",
+              年龄: "18",
+              身份: "魔都一中1班高中毕业生，即将前往京市华清大学就读计算机专业",
+              身高: "165cm",
+              体重: "45kg",
+              外貌: "美丽知性大方，远近闻名的大美人，校花兼学霸。",
+              性格: "热情活泼。",
+              背景: "家境优渥，有好闺蜜陈淇莹、尤燕娇、潘燕虹和陈佳丽，是苏十一同班同学。",
+              NSFW: "C罩杯，白虎，处女，敏感点是小穴和乳头，易高潮。"
+            },
+            variables: {
+              状态: { 好感度: 0, 警戒度: 0, 服从度: 0, 性欲: 0, 快感值: 0 },
+              敏感: { 小穴: 120, 乳头: 120, 阴蒂: 100, 菊穴: 100, 尿道: 100 },
+              物品: { 手机: "校花日常手机" }
+            }
+          }
+        : {
+            persona: {
+              姓名: "未命名角色",
+              性别: "女",
+              年龄: "18",
+              身份: "待补充",
+              外貌: "待补充",
+              性格: "待补充",
+              背景: text || "由玩家提供的角色描述。"
+            },
+            variables: {
+              状态: { 好感度: 0, 警戒度: 0, 服从度: 0, 性欲: 0, 快感值: 0 },
+              敏感: {},
+              物品: {}
+            }
+          };
+      return Promise.resolve(draft);
+    }
+    if (action === "role:confirm") {
+      const name = payload.draft?.persona?.姓名 || "未命名角色";
+      storage.state.roles = storage.state.roles.filter((item) => item.name !== name);
+      storage.state.roles.push({ name, draft: payload.draft });
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    if (action === "role:delete") {
+      storage.state.roles = storage.state.roles.filter((item) => item.name !== payload.name);
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    if (action === "location:add") {
+      storage.state.locations = storage.state.locations.filter((item) => item.name !== payload.name);
+      storage.state.locations.push({ name: payload.name, description: payload.description || "" });
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    if (action === "location:delete") {
+      storage.state.locations = storage.state.locations.filter((item) => item.name !== payload.name);
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    if (action === "rule:save") {
+      storage.state.rules = storage.state.rules.filter((item) => item.id !== payload.id);
+      storage.state.rules.push(payload);
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    if (action === "rule:delete") {
+      storage.state.rules = storage.state.rules.filter((item) => item.id !== payload.id);
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    if (action === "plot:save") {
+      storage.state.plot = payload.plot || "";
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    if (action === "icon:set") {
+      storage.state.icon = payload.icon;
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    if (action === "crack:set") {
+      storage.state.crack = payload;
+      writePreviewStorage(storage);
+      return Promise.resolve(storage.state);
+    }
+    return Promise.reject(new Error(`预览模式不支持：${action}`));
+  }
+
+  function readPreviewStorage() {
+    try {
+      return JSON.parse(localStorage.getItem("hypno-app-revised:preview") || "null") || {
+        state: {
+          roles: [],
+          locations: [],
+          rules: [],
+          plot: "",
+          icon: "pulse",
+          crack: { mc: false, money: false, vip: false }
+        },
+        api: { ...state.api }
+      };
+    } catch {
+      return { state: { roles: [], locations: [], rules: [], plot: "", icon: "pulse", crack: { mc: false, money: false, vip: false } }, api: { ...state.api } };
+    }
+  }
+
+  function writePreviewStorage(value) {
+    localStorage.setItem("hypno-app-revised:preview", JSON.stringify(value));
+  }
+
+  function render() {
+    root.innerHTML = `
+      <header class="app-header">
+        <h1 class="app-title">催眠APP（改）</h1>
+        <span class="status-pill">${isEmbedded ? "已连接" : "预览模式"}</span>
+      </header>
+      <section class="content">
+        <div class="section" id="tab-content"></div>
+      </section>
+      <nav class="bottom-nav">
+        ${tabs
+          .map(
+            ([id, label]) =>
+              `<button class="nav-button ${id === activeTab ? "active" : ""}" data-tab="${id}">${esc(label)}</button>`
+          )
+          .join("")}
+      </nav>
+    `;
+    document.querySelectorAll("[data-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeTab = button.dataset.tab;
+        render();
+      });
+    });
+    renderTab();
+  }
+
+  function renderTab() {
+    const target = document.getElementById("tab-content");
+    target.innerHTML = "";
+    if (activeTab === "home") target.innerHTML = homeView();
+    if (activeTab === "roles") target.innerHTML = rolesView();
+    if (activeTab === "locations") target.innerHTML = locationsView();
+    if (activeTab === "rules") target.innerHTML = rulesView();
+    if (activeTab === "plot") target.innerHTML = plotView();
+    if (activeTab === "api") target.innerHTML = apiView();
+    if (activeTab === "icon") target.innerHTML = iconView();
+    if (activeTab === "crack") target.innerHTML = crackView();
+    if (activeTab === "calendar") target.innerHTML = calendarView();
+    bindTabEvents();
+  }
+
+  function homeView() {
+    return `
+      <section class="panel">
+        <h2>控制中心</h2>
+        <p class="list-meta">首楼由玩家自己创建。此 APP 只负责生成角色、地点、规则和设定，不代替正文模型。</p>
+        <div class="button-row">
+          <button class="button" data-action="go-roles">生成角色</button>
+          <button class="button secondary" data-action="go-plot">设置剧情大纲</button>
+        </div>
+      </section>
+      <section class="panel">
+        <h2>当前状态</h2>
+        <div class="list">
+          <div class="list-item"><span class="list-title">角色 ${state.roles.length}</span><span class="list-meta">${state.roles.map((item) => item.name).join("、") || "暂无角色"}</span></div>
+          <div class="list-item"><span class="list-title">地点 ${state.locations.length}</span><span class="list-meta">${state.locations.map((item) => item.name).join("、") || "暂无地点"}</span></div>
+          <div class="list-item"><span class="list-title">规则 ${state.rules.length}</span><span class="list-meta">${state.rules.length ? "已配置" : "暂无规则"}</span></div>
+          <div class="list-item"><span class="list-title">剧情</span><span class="list-meta">${state.plot ? "已配置" : "无剧情大纲"}</span></div>
+        </div>
+      </section>
+    `;
+  }
+
+  function rolesView() {
+    const draft = state.draftRole
+      ? `<pre class="preview-json">${esc(JSON.stringify(state.draftRole, null, 2))}</pre>
+        <div class="button-row"><button class="button" data-action="confirm-role">确认写入世界书</button><button class="button secondary" data-action="clear-role-draft">放弃草稿</button></div>`
+      : "";
+    return `
+      <section class="panel">
+        <h2>生成角色</h2>
+        <div class="field">
+          <label for="role-input">角色描述</label>
+          <textarea class="textarea" id="role-input" placeholder="例如：陈珊珊，18岁，魔都一中1班的高中毕业生，165CM，45kg，家境优渥，美丽知性大方，远近闻名的大美人，校花兼学霸，性格热情活泼，有好闺蜜陈淇莹、尤燕娇、潘燕虹和陈佳丽，是苏十一同班同学，即将前往京市华清大学就读计算机专业。NSFW：C罩杯，白虎，处女，敏感点是小穴和乳头，易高潮"></textarea>
+        </div>
+        <div class="button-row"><button class="button" data-action="generate-role" ${state.loading ? "disabled" : ""}>生成角色草稿</button></div>
+        <div class="list-meta">生成结果先在此预览，确认后才会写入世界书、APP 档案和 MVU。</div>
+      </section>
+      ${draft ? `<section class="panel"><h2>角色草稿</h2>${draft}</section>` : ""}
+      <section class="panel">
+        <h2>已确认角色</h2>
+        <div class="list">${state.roles.map(roleItem).join("") || '<div class="list-meta">暂无角色</div>'}</div>
+      </section>
+    `;
+  }
+
+  function roleItem(item) {
+    return `
+      <div class="list-item">
+        <div class="list-title">${esc(item.name)}</div>
+        <div class="list-meta">${esc((item.draft?.persona?.身份 || item.draft?.persona?.背景 || "").slice(0, 120))}</div>
+        <div class="button-row"><button class="button danger" data-action="delete-role" data-name="${esc(item.name)}">删除</button></div>
+      </div>
+    `;
+  }
+
+  function locationsView() {
+    return `
+      <section class="panel">
+        <h2>添加地点</h2>
+        <div class="field">
+          <label for="location-input">地点描述</label>
+          <textarea class="textarea" id="location-input" placeholder="华国京市，世界政治经济文化中心，有世界第一大学——华清大学，还有众多高等学府"></textarea>
+        </div>
+        <button class="button" data-action="add-location">添加地点</button>
+      </section>
+      <section class="panel">
+        <h2>地点列表</h2>
+        <div class="list">${state.locations.map(locationItem).join("") || '<div class="list-meta">暂无地点</div>'}</div>
+      </section>
+    `;
+  }
+
+  function locationItem(item) {
+    return `
+      <div class="list-item">
+        <div class="list-title">${esc(item.name)}</div>
+        <div class="list-meta">${esc(item.description || "")}</div>
+        <div class="button-row"><button class="button danger" data-action="delete-location" data-name="${esc(item.name)}">删除</button></div>
+      </div>
+    `;
+  }
+
+  function rulesView() {
+    return `
+      <section class="panel">
+        <h2>规则设定</h2>
+        <div class="field">
+          <label>类型</label>
+          <select class="select" id="rule-type">
+            <option value="永久">永久规则</option>
+            <option value="临时">临时规则</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rule-text">规则内容</label>
+          <textarea class="textarea" id="rule-text" placeholder="从被催眠到解除或日常切换后，角色会遗忘期间经历，并基于自身想象填补空白。已下达的催眠暗示仍保留，并在潜意识中持续影响行为"></textarea>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label for="rule-scope">生效范围</label><input class="input" id="rule-scope" placeholder="整个故事 / 指定地点" /></div>
+          <div class="field"><label for="rule-time">生效时间</label><input class="input" id="rule-time" placeholder="永久 / 3天 / 1小时" /></div>
+        </div>
+        <button class="button" data-action="add-rule">添加规则</button>
+      </section>
+      <section class="panel">
+        <h2>规则查看</h2>
+        <div class="list">${state.rules.map(ruleItem).join("") || '<div class="list-meta">暂无规则</div>'}</div>
+      </section>
+    `;
+  }
+
+  function ruleItem(rule) {
+    return `
+      <div class="list-item">
+        <div class="button-row"><span class="tag">${esc(rule.type)}</span><span class="tag">${esc(rule.scope || "整个故事")}</span></div>
+        <div class="list-title">${esc(rule.text)}</div>
+        <div class="list-meta">${esc(rule.time || "永久")}</div>
+        <div class="button-row"><button class="button danger" data-action="delete-rule" data-id="${esc(rule.id)}">删除</button></div>
+      </div>
+    `;
+  }
+
+  function plotView() {
+    return `
+      <section class="panel">
+        <h2>剧情大纲</h2>
+        <p class="list-meta">剧情大纲可选。留空表示不施加额外剧情约束。</p>
+        <div class="field">
+          <label for="plot-input">大纲内容</label>
+          <textarea class="textarea" id="plot-input" placeholder="例如：故事从大学开学前开始，主角逐步接触催眠APP，但剧情不脱离校园与日常范围。"></textarea>
+        </div>
+        <div class="button-row"><button class="button" data-action="save-plot">保存大纲</button><button class="button secondary" data-action="clear-plot">清除大纲</button></div>
+      </section>
+    `;
+  }
+
+  function apiView() {
+    const api = state.api;
+    return `
+      <section class="panel">
+        <h2>API 设置</h2>
+        <div class="field">
+          <label>模式</label>
+          <select class="select" id="api-mode">
+            <option value="custom" ${api.mode === "custom" ? "selected" : ""}>自定义 API</option>
+            <option value="tavern" ${api.mode === "tavern" ? "selected" : ""}>使用酒馆连接预设</option>
+          </select>
+        </div>
+        <div id="custom-api" ${api.mode === "tavern" ? 'style="display:none"' : ""}>
+          <div class="field"><label for="api-endpoint">OpenAI 兼容端点</label><input class="input" id="api-endpoint" value="${esc(api.endpoint)}" placeholder="https://api.example.com/v1" /></div>
+          <div class="field"><label for="api-key">API Key</label><input class="input" id="api-key" type="password" value="${esc(api.apiKey)}" placeholder="sk-..." /></div>
+          <div class="field"><label for="api-model">模型</label><input class="input" id="api-model" value="${esc(api.model)}" placeholder="gpt-4o-mini" /></div>
+          <div class="grid-2">
+            <div class="field"><label for="api-max-tokens">最大 tokens</label><input class="input" id="api-max-tokens" type="number" min="1" max="32768" value="${esc(api.maxTokens)}" /></div>
+            <div class="field"><label for="api-temperature">温度</label><input class="input" id="api-temperature" type="number" min="0" max="2" step="0.1" value="${esc(api.temperature)}" /></div>
+          </div>
+          <button class="button secondary" data-action="get-models">获取模型</button>
+        </div>
+        <div id="tavern-api" ${api.mode === "custom" ? 'style="display:none"' : ""}>
+          <div class="field"><label for="api-preset">酒馆预设</label><select class="select" id="api-preset"><option value="">请选择</option></select></div>
+        </div>
+        <div class="button-row" style="margin-top:10px"><button class="button" data-action="save-api">保存 API 设置</button></div>
+      </section>
+    `;
+  }
+
+  function iconView() {
+    return `
+      <section class="panel">
+        <h2>悬浮图标</h2>
+        <div class="button-row">
+          ${Object.entries(icons)
+            .map(
+              ([key, label]) =>
+                `<button class="swatch ${state.icon === key ? "active" : ""}" data-action="set-icon" data-icon="${key}">${label}</button>`
+            )
+            .join("")}
+        </div>
+        <div class="field" style="margin-top:10px"><label for="icon-file">上传自定义图片</label><input class="input" id="icon-file" type="file" accept="image/*" /></div>
+      </section>
+    `;
+  }
+
+  function crackView() {
+    const crack = state.crack;
+    return `
+      <section class="panel">
+        <h2>破解版</h2>
+        <p class="list-meta">只改变 APP 内资源限制，不写入正文剧情。</p>
+        ${crackToggle("crack-mc", "无限 MC 能量", crack.mc, "mc")}
+        ${crackToggle("crack-money", "无限零花钱", crack.money, "money")}
+        ${crackToggle("crack-vip", "解除 VIP 等级", crack.vip, "vip")}
+      </section>
+    `;
+  }
+
+  function crackToggle(id, label, checked, key) {
+    return `
+      <label class="list-item" style="grid-template-columns:auto 1fr;align-items:center">
+        <input type="checkbox" id="${id}" data-crack="${key}" ${checked ? "checked" : ""} />
+        <span>${esc(label)}</span>
+      </label>
+    `;
+  }
+
+  function calendarView() {
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const first = new Date(year, month, 1);
+    const startDay = first.getDay();
+    const days = new Date(year, month + 1, 0).getDate();
+    let cells = "";
+    for (let i = 0; i < startDay; i += 1) cells += '<div class="calendar-cell"></div>';
+    for (let day = 1; day <= days; day += 1) {
+      const date = new Date(year, month, day);
+      const dateKey = `${month + 1}-${day}`;
+      const holiday = holidays[dateKey];
+      const terms = solarTerms[month + 1] || [];
+      const term = terms[day <= 15 ? 0 : 1] || "";
+      cells += `<div class="calendar-cell ${holiday ? "holiday" : term ? "term" : ""}">${day}${holiday ? `<br />${holiday}` : term ? `<br />${term}` : ""}</div>`;
+    }
+    return `
+      <section class="panel">
+        <h2>${year}年${month + 1}月</h2>
+        <div class="calendar-grid">
+          ${["日", "一", "二", "三", "四", "五", "六"].map((day) => `<div class="calendar-cell">${day}</div>`).join("")}
+          ${cells}
+        </div>
+        <p class="list-meta" style="margin-top:8px">中国日常日历：公历、节气和常见节日。</p>
+      </section>
+    `;
+  }
+
+  function bindTabEvents() {
+    document.querySelectorAll("[data-action]").forEach((node) => {
+      node.addEventListener("click", () => void handleAction(node.dataset.action, node));
+    });
+    document.querySelectorAll("[data-crack]").forEach((node) => {
+      node.addEventListener("change", async () => {
+        const next = { ...state.crack };
+        const key = node.dataset.crack;
+        next[key] = node.checked;
+        state.crack = next;
+        await request("crack:set", next);
+        toast("破解版设置已保存");
+      });
+    });
+    const apiMode = document.getElementById("api-mode");
+    if (apiMode) {
+      apiMode.addEventListener("change", () => {
+        state.api.mode = apiMode.value;
+        document.getElementById("custom-api").style.display = apiMode.value === "custom" ? "" : "none";
+        document.getElementById("tavern-api").style.display = apiMode.value === "tavern" ? "" : "none";
+      });
+    }
+    const iconFile = document.getElementById("icon-file");
+    if (iconFile) {
+      iconFile.addEventListener("change", async () => {
+        const file = iconFile.files?.[0];
+        if (!file) return;
+        customIconData = await readFileAsDataUrl(file);
+        state.icon = "custom";
+        await request("icon:set", { icon: "custom" });
+        toast("自定义图标已保存");
+        render();
+      });
+    }
+    const plotInput = document.getElementById("plot-input");
+    if (plotInput) plotInput.value = state.plot || "";
+    void loadPresets();
+  }
+
+  function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = () => reject(new Error("读取图片失败"));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function loadPresets() {
+    const presetSelect = document.getElementById("api-preset");
+    if (!presetSelect) return;
+    try {
+      const presets = await request("api:presets");
+      presetSelect.innerHTML = ['<option value="">请选择</option>']
+        .concat(presets.map((name) => `<option value="${esc(name)}" ${state.api.preset === name ? "selected" : ""}>${esc(name)}</option>`))
+        .join("");
+    } catch {
+      presetSelect.innerHTML = '<option value="">无可用预设</option>';
+    }
+  }
+
+  async function handleAction(action, node) {
+    try {
+      if (action === "go-roles") {
+        activeTab = "roles";
+        render();
+      } else if (action === "go-plot") {
+        activeTab = "plot";
+        render();
+      } else if (action === "generate-role") {
+        state.loading = true;
+        render();
+        const text = document.getElementById("role-input")?.value || "";
+        state.draftRole = await request("role:generate", { text });
+        state.loading = false;
+        render();
+        toast("角色草稿已生成，请确认后写入");
+      } else if (action === "confirm-role") {
+        if (!state.draftRole) return;
+        state = await request("role:confirm", { draft: state.draftRole });
+        state.draftRole = null;
+        render();
+        toast("角色已写入世界书、档案和变量");
+      } else if (action === "clear-role-draft") {
+        state.draftRole = null;
+        render();
+      } else if (action === "delete-role") {
+        state = await request("role:delete", { name: node.dataset.name });
+        render();
+        toast("角色已同步删除");
+      } else if (action === "add-location") {
+        const text = document.getElementById("location-input")?.value || "";
+        const name = text.split(/[，,。\n]/)[0].trim() || text.trim() || "未命名地点";
+        state = await request("location:add", { name, description: text });
+        render();
+        toast("地点已添加");
+      } else if (action === "delete-location") {
+        state = await request("location:delete", { name: node.dataset.name });
+        render();
+        toast("地点已删除");
+      } else if (action === "add-rule") {
+        const text = document.getElementById("rule-text")?.value || "";
+        const type = document.getElementById("rule-type")?.value || "永久";
+        const scope = document.getElementById("rule-scope")?.value || "";
+        const time = document.getElementById("rule-time")?.value || "永久";
+        const id = `rule-${Date.now()}`;
+        state = await request("rule:save", { id, text, type, scope, time });
+        render();
+        toast("规则已保存");
+      } else if (action === "delete-rule") {
+        state = await request("rule:delete", { id: node.dataset.id });
+        render();
+        toast("规则已删除");
+      } else if (action === "save-plot") {
+        state.plot = document.getElementById("plot-input")?.value || "";
+        state = await request("plot:save", { plot: state.plot });
+        render();
+        toast("剧情大纲已保存");
+      } else if (action === "clear-plot") {
+        state.plot = "";
+        state = await request("plot:save", { plot: "" });
+        render();
+        toast("剧情大纲已清除");
+      } else if (action === "get-models") {
+        const endpoint = document.getElementById("api-endpoint")?.value || "";
+        const key = document.getElementById("api-key")?.value || "";
+        const models = await request("api:models", { endpoint, apiKey: key });
+        const model = document.getElementById("api-model");
+        if (model && models.length) model.value = models[0];
+        toast(`获取到 ${models.length} 个模型`);
+      } else if (action === "save-api") {
+        state.api.mode = document.getElementById("api-mode")?.value || "custom";
+        state.api.endpoint = document.getElementById("api-endpoint")?.value || "";
+        state.api.apiKey = document.getElementById("api-key")?.value || "";
+        state.api.model = document.getElementById("api-model")?.value || "";
+        state.api.maxTokens = Number(document.getElementById("api-max-tokens")?.value || 1024);
+        state.api.temperature = Number(document.getElementById("api-temperature")?.value || 0.7);
+        state.api.preset = document.getElementById("api-preset")?.value || "";
+        state.api = await request("api:set", state.api);
+        render();
+        toast("API 设置已保存");
+      } else if (action === "set-icon") {
+        state.icon = node.dataset.icon;
+        await request("icon:set", { icon: state.icon });
+        render();
+        toast("悬浮图标已切换");
+      }
+    } catch (error) {
+      toast(error.message || "操作失败");
+    }
+  }
+
+  async function boot() {
+    render();
+    try {
+      const [savedState, savedApi] = await Promise.all([request("state:get"), request("api:get")]);
+      Object.assign(state, savedState);
+      if (savedApi) Object.assign(state.api, savedApi);
+      render();
+    } catch {
+      render();
+    }
+  }
+
+  void boot();
+})();
+
+    </script>
+  </body>
+</html>
