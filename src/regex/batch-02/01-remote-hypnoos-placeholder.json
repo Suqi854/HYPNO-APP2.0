@@ -1,6 +1,6 @@
 {
   "scriptName": "催眠APP（改）远程前端占位",
-  "findRegex": "/<HYPNO_APP_REVISED_IMPL>/g",
+  "findRegex": "/HYPNO_APP_REVISED_IMPL/g",
   "replaceString": "<iframe id=\"hypno-app-revised-frame\" title=\"催眠APP（改）\" src=\"__HYPNO_FRONTEND_URL__\" style=\"width:100%;height:calc(100dvh - 68px);min-height:620px;border:0;background:#111827;display:block;\" allow=\"clipboard-read; clipboard-write\"></iframe>",
   "placement": [2],
   "markdownOnly": true,

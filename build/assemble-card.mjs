@@ -220,7 +220,7 @@ function createCard(entries, scripts, regexes) {
       description: "通用催眠APP（改）。玩家配置API，生成角色、地点、规则和剧情，自行创建首楼。",
       personality: "",
       scenario: "",
-      first_mes: "首楼由玩家创建。\n\n<HYPNO_APP_REVISED_IMPL>",
+      first_mes: "首楼由玩家创建。\n\nHYPNO_APP_REVISED_IMPL",
       mes_example: "",
       creator_notes: "First Playable modular build",
       system_prompt: readText("card/system-prompt.txt"),
