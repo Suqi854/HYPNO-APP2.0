@@ -35,13 +35,15 @@ updated: 2026-08-19
 - `npm run build` 成功，生成 `dist/webview/st-load-inline.html`、`dist/card/催眠APP（改）.json`、`dist/card/催眠APP（改）.png`。
 - 构建脚本自检通过：4 条初始世界书、1 个桥接脚本、1 个远程前端正则，PNG 内 `chara` tEXt 可解析。
 - 项目权威文件校验通过。
+- 本地 Git 已初始化为 `main`，提交 `444a3e4` 已推送到 `origin/main`。
+- 推送输出确认 `new branch main -> main`，远端已创建 `main`。
 
 ## 开放风险
 
 - 真实 SillyTavern 下 iframe、MVU、远程加载、变量初始化和脚本执行顺序尚未验证。
 - API 密钥本地存储和导出脱敏必须在构建门验证。
 - 角色生成与删除需要世界书、档案和 MVU 三处事务式一致。
-- GitHub 推送凭据尚未在本机验证。
+- jsdelivr 缓存刷新尚未验证；远程文件应在推送后稍等一段时间再访问。
 - 真机 SillyTavern 尚未验证 iframe 远程加载、世界书写入、MVU 同步和正则替换。
 - 自定义 API 请求可能受目标服务 CORS 限制，需在真实酒馆环境中确认。
 
