@@ -1,7 +1,7 @@
 {
   "scriptName": "催眠APP（改）远程前端占位",
-  "findRegex": "/HYPNO_APP_REVISED_IMPL/g",
-  "replaceString": "<iframe id=\"hypno-app-revised-frame\" title=\"催眠APP（改）\" src=\"__HYPNO_FRONTEND_URL__\" style=\"width:100%;height:calc(100dvh - 68px);min-height:620px;border:0;background:#111827;display:block;\" allow=\"clipboard-read; clipboard-write\"></iframe>",
+  "findRegex": "HYPNO_APP_REVISED_IMPL",
+  "replaceString": "```\n<body>\n<script>\n(() => {\n  const url = \"__HYPNO_FRONTEND_URL__\";\n  const mount = document.currentScript?.parentElement || document.body;\n  const frame = document.createElement(\"iframe\");\n  frame.id = \"hypno-app-revised-frame\";\n  frame.title = \"催眠APP（改）\";\n  frame.src = url;\n  frame.setAttribute(\"allow\", \"clipboard-read; clipboard-write\");\n  frame.style.cssText = \"width:100%;height:min(720px,calc(100vh - 90px));min-height:620px;border:0;display:block;background:#111827;\";\n  mount.appendChild(frame);\n})();\n</script>\n</body>\n```",
   "placement": [2],
   "markdownOnly": true,
   "promptOnly": false,
