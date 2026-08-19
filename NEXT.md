@@ -24,6 +24,7 @@ updated: 2026-08-19
 - 删除角色时同步清理世界书关联条目、APP 档案和 MVU。
 - GitHub 目标仓库 `Suqi854/HYPNO-APP2.0` 已确认存在且为空；已授权方案通过后初始化 Git 和推送。
 - First Playable 已实现轻量远程 HypnoOS 前端、桥接脚本、初始世界书和 JSON/PNG 构建器。
+- 已改回从 v4.3 原始卡派生：保留 12 个原脚本和 17 个原正则，其中 4 个固定脚本、3 个固定正则默认停用，并新增 API/世界书桥脚本。
 
 ## 最近证据
 
@@ -45,6 +46,8 @@ updated: 2026-08-19
 - 角色生成与删除需要世界书、档案和 MVU 三处事务式一致。
 - jsdelivr 缓存刷新尚未验证；远程文件应在推送后稍等一段时间再访问。
 - 已通过 `Invoke-WebRequest` 验证远程前端返回 `200`，内容包含 `hypno-app-revised`。
+- 已通过 `Invoke-WebRequest` 验证 `floating-bootstrap.js` 和 `st-load-inline.html` 均返回 `200`。
+- 新卡世界书 51 条，原脚本 12 条 + 新增桥 1 条，原正则 17 条。
 - 真机 SillyTavern 尚未验证 iframe 远程加载、世界书写入、MVU 同步和正则替换。
 - 自定义 API 请求可能受目标服务 CORS 限制，需在真实酒馆环境中确认。
 
