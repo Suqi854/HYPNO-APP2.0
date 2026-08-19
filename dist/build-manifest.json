@@ -2,18 +2,21 @@
   "schemaVersion": 1,
   "cardName": "催眠APP（改）",
   "version": "0.1.0",
-  "remoteUrl": "https://cdn.jsdelivr.net/gh/Suqi854/HYPNO-APP2.0@59bbe4d/dist/webview/st-load-inline.html",
-  "remoteCommit": "59bbe4d",
-  "builtAt": "2026-08-19T11:40:01.560Z",
+  "source": "v4.3",
+  "remoteBase": "https://cdn.jsdelivr.net/gh/Suqi854/HYPNO-APP2.0@main",
+  "bootstrapUrl": "https://cdn.jsdelivr.net/gh/Suqi854/HYPNO-APP2.0@main/dist/webview/floating-bootstrap.js",
+  "frontendUrl": "https://cdn.jsdelivr.net/gh/Suqi854/HYPNO-APP2.0@main/dist/webview/st-load-inline.html",
+  "remoteCommit": "main",
+  "builtAt": "2026-08-19T11:52:07.666Z",
   "artifacts": {
     "json": "dist/card/催眠APP（改）.json",
     "png": "dist/card/催眠APP（改）.png",
-    "webview": "dist/webview/st-load-inline.html"
+    "webview": "dist/webview/st-load-inline.html",
+    "bootstrap": "dist/webview/floating-bootstrap.js"
   },
   "checks": {
-    "worldbookEntries": 4,
-    "bridgeScripts": 1,
-    "regexScripts": 1,
-    "apiKeyFieldReferenced": true
+    "worldbookEntries": 51,
+    "tavernScripts": 13,
+    "regexScripts": 17
   }
 }
